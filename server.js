@@ -1,10 +1,20 @@
 import express from "express";
 import cors from "cors"
+import db from "./Database/db.js";
+
 
 const app = express();
 const port = 8000;
 app.use (express.json())
 app.use (cors())
+
+try {
+    await db.authenticate()
+    console.log('database connected');
+} catch (error) {
+    console.log(error);
+}
+
 
 app.get('/', (req, res) => {
     res.send("hello world")
