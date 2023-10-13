@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors"
 import db from "./Database/db.js";
-import Users from "./Model/UserModel.js";
+import router from "./Router/index.js";
 
 
 
@@ -13,11 +13,12 @@ app.use (cors())
 try {
     await db.authenticate()
     console.log('database connected');
-    await Users.sync();
+    // await Users.sync();
 } catch (error) {
     console.log(error);
 }
 
+app.use(router)
 
 app.get('/', (req, res) => {
     res.send("hello world")
