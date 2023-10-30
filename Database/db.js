@@ -5,4 +5,6 @@ const db = new Sequelize('db_pendaftaran_magang', 'root', '', {
     dialect : "mysql"
 });
 
+
+
 export default db

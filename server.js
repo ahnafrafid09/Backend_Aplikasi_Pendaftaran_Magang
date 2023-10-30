@@ -4,18 +4,24 @@ import dotenv from "dotenv"
 import cookieParser from "cookie-parser";
 import db from "./Database/db.js";
 import router from "./Router/index.js";
+import fileUpload from 'express-fileupload'
 dotenv.config()
 
 const app = express();
 const port = 8000;
-app.use (express.json())
-app.use (cors({credentials: true, origin: "http://127.0.0.1:5173"}))
-app.use (cookieParser())
+app.use(express.json())
+app.use(cors({ credentials: true, origin: true }))
+app.use(cookieParser())
+app.use(fileUpload({
+    limits: { fileSize: 10 * 1024 * 1024 } // Batas ukuran berkas: 10 MB
+}));
+app.use(express.static("public"));
 
 try {
     await db.authenticate()
     console.log('database connected');
-    // await Users.sync();
+    // await db.sync();
+
 } catch (error) {
     console.log(error);
 }
