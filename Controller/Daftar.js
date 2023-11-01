@@ -8,7 +8,7 @@ import fs from "fs";
 
 export const getDaftar = async (req, res) => {
     const page = parseInt(req.query.page) || 0
-    const limit = parseInt(req.query.limti) || 10
+    const limit = parseInt(req.query.limit) || 10
     const search = (req.query.search_query) || ""
     const offset = limit * page
     const totalRows = await Instansi.count({
@@ -73,6 +73,47 @@ export const getDaftarbyId = async (req, res) => {
             res.status(500).json({ error: 'Terjadi kesalahan dalam mencari' });
         }
     }
+
+    export const getDaftarbyMenunggu = async (req, res) => {
+        try {
+            const response = await Instansi.findAll({
+                where: {
+                    status: 'Menunggu'
+                }
+            });
+    
+            if (response.length > 0) {
+                res.status(200).json(response);
+            } else {
+                res.status(404).json({ message: 'Instansi tidak ditemukan' });
+            }
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ error: 'Terjadi kesalahan dalam mencari' });
+        }
+    };
+    
+    export const getDaftarbyDiterima = async (req, res) => {
+        try {
+            const response = ['Diterima', 'Aktif', 'Selesai'];
+    
+            const ResponseDiterima = await Instansi.findAll({
+                where: {
+                    status: response
+                }
+            });
+    
+            if (ResponseDiterima.length > 0) {
+                res.status(200).json(ResponseDiterima);
+            } else {
+                res.status(404).json({ message: 'Instansi tidak ditemukan' });
+            }
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ error: 'Terjadi kesalahan dalam mencari' });
+        }
+    };
+
 export const daftar = async (req, res) => {
         const pelamar = JSON.parse(req.body.pelamar);
 

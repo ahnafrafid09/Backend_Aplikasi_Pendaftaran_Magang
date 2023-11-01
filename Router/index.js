@@ -2,7 +2,7 @@ import Express from "express";
 import { verifyToken } from "../Middleware/VerifToken.js";
 import { getUsers, Register, updateUser, deleteUser } from "../Controller/Login/User.js";
 import { refreshToken } from "../Controller/Login/RefreshToken.js";
-import { daftar, hapusDaftar, getDaftarbyId, editDaftar, getDaftar } from "../Controller/Daftar.js";
+import { daftar, hapusDaftar, getDaftarbyId, editDaftar, getDaftar, getDaftarbyMenunggu, getDaftarbyDiterima } from "../Controller/Daftar.js";
 import { deleteInstansi, getInstansi, getInstansibyId } from "../Controller/Instansi.js";
 import { Login, Logout } from "../Controller/Login/Auth.js";
 
@@ -18,6 +18,8 @@ router.delete("/api/logout", Logout)
 
 // API daftar
 router.get('/api/daftar', getDaftar)
+router.get('/api/daftar/menunggu', getDaftarbyMenunggu)
+router.get('/api/daftar/terima', getDaftarbyDiterima)
 router.get('/api/daftar/:id', getDaftarbyId)
 router.post('/api/daftar', daftar)
 router.patch('/api/daftar/:id', editDaftar)
