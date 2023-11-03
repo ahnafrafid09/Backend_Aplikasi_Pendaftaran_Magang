@@ -11,7 +11,7 @@ const Surat = db.define('surat', {
         unique: false
     },
     tanggal_pengajuan: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
         allowNull: false
     },
     file: {

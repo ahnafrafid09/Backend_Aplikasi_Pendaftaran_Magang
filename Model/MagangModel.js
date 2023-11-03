@@ -6,11 +6,11 @@ const { DataTypes } = Sequelize
 
 const Magang = db.define('magang', {
     tanggal_masuk: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
         allowNull: false
     },
     tanggal_selesai: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
         allowNull: false
     },
     bagian: {
@@ -38,6 +38,7 @@ const Magang = db.define('magang', {
 // relasi Magang dengan instansi
 Instansi.hasOne(Magang)
 Magang.belongsTo(Instansi)
+
 
 
 export default Magang

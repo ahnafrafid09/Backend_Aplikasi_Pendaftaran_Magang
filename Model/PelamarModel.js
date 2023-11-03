@@ -30,7 +30,7 @@ const Pelamar = db.define('pelamar', {
     freezeTableName: true
 })
 
-Instansi.hasOne(Pelamar)
+Instansi.hasMany(Pelamar)
 Pelamar.belongsTo(Instansi)
 
 export default Pelamar

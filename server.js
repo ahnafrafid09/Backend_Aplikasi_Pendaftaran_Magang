@@ -10,7 +10,13 @@ dotenv.config()
 const app = express();
 const port = 8000;
 app.use(express.json())
-app.use(cors({ credentials: true, origin: true }))
+app.use(
+    cors({
+        origin: 'http://localhost:5173', // Ganti dengan alamat asal aplikasi React Anda
+        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+        credentials: true, // Mengizinkan kredensial (misalnya, dengan menggunakan cookie)
+    })
+);
 app.use(cookieParser())
 app.use(fileUpload({
     limits: { fileSize: 10 * 1024 * 1024 } // Batas ukuran berkas: 10 MB
