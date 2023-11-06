@@ -9,6 +9,7 @@ dotenv.config()
 
 const app = express();
 const port = 8000;
+app.use(express.static("public/files"))
 app.use(express.json())
 app.use(
     cors({

@@ -3,7 +3,7 @@ import Magang from "../Model/MagangModel.js";
 import Pelamar from "../Model/PelamarModel.js";
 import Surat from "../Model/SuratModel.js";
 import path from "path";
-import { Op } from "sequelize";
+import { Model, Op } from "sequelize";
 import fs from "fs";
 
 export const getDaftar = async (req, res) => {
@@ -46,22 +46,29 @@ export const getDaftar = async (req, res) => {
 }
 
 export const getDaftarbyId = async (req, res) => {
-    const instansiId = req.params.instansiId
     try {
-        const response = await Instansi.findAll(instansiId, {
-            includes: [
+        const instansiID = req.params.instansiId;
+
+        const dataInstansi = await Instansi.findByPk(instansiID, {
+            include: [
+                {
+                    model: Pelamar
+                },
                 {
                     model: Surat
-                }, {
-                    model: Pelamar
                 }
-            ]
-        })
+            ],
 
-        res.status(200).json(response)
+        });
+
+        if (dataInstansi) {
+            res.json(dataInstansi);
+        } else {
+            res.status(404).send('Instansi tidak ditemukan.');
+        }
     } catch (error) {
-        console.log(error);
-        res.status(500).json({ error: 'Terjadi kesalahan dalam mencari' });
+        console.error('Kesalahan:', error);
+        res.status(500).send('Terjadi kesalahan server');
     }
 }
 
@@ -116,7 +123,7 @@ export const getDaftarbyMenunggu = async (req, res) => {
 };
 
 export const getDaftarbyDiterima = async (req, res) => {
-    const response = ['Diterima', 'Aktif', 'Selesai'];
+    const response = ['Diterima', 'Aktif'];
     const page = parseInt(req.query.page) || 0
     const limit = parseInt(req.query.limit) || 10
     const search = (req.query.search_query) || ""
@@ -179,12 +186,12 @@ export const daftar = async (req, res) => {
             return res.status(400).json({ error: 'Mohon unggah berkas PDF.' });
         }
         const pdfFile = req.files.pdfFile;
-        const url = `public/files/${pdfFile.name}`;
+        const url = `${req.protocol}://${req.get("host")}/files/${pdfFile.name}`;
         if (req.files && req.files.pdfFile) {
             if (path.extname(pdfFile.name) !== '.pdf') {
                 return res.status(400).json({ message: 'File harus berformat PDF' });
             }
-            pdfFile.mv(url, (err) => {
+            pdfFile.mv(`public/files/${pdfFile.name}`, (err) => {
                 if (err) {
                     return res.status(500).json({ error: 'Gagal menyimpan berkas PDF.' });
                 }
@@ -214,70 +221,6 @@ export const daftar = async (req, res) => {
         res.status(500).json({ error: 'Terjadi kesalahan dalam membuat data' });
     }
 }
-
-export const editDaftar = async (req, res) => {
-    const instansiId = req.params.id
-    const daftar = await Instansi.findByPk(instansiId, {
-        include: [Surat, Magang, Pelamar]
-    })
-    if (!daftar) return res.status(404).json({ msg: "Daftar Tidak Tersedia" })
-
-    let fileName = ""
-    if (req.files === null && req.files.pdfFile === daftar.surat.file) {
-        fileName = daftar.surat.file
-    } else {
-        const pdfFile = req.files.pdfFile;
-        fileName = pdfFile.name
-
-        const filePath = daftar.surat.url
-        fs.unlinkSync(filePath)
-
-        pdfFile.mv(`public/files/${pdfFile.name}`, async (err) => {
-            if (err) {
-                return res.status(500).json({ error: 'Gagal menyimpan berkas PDF.' });
-            }
-        });
-    }
-    const url = `public/files/${fileName}`;
-    try {
-        await Instansi.update({
-            nama_instansi: req.body.namaInstansi,
-            alamat: req.body.alamatInstansi,
-            kategori: req.body.kategori,
-        }, {
-            where: {
-                id: instansiId
-            }
-        })
-        await Surat.update({
-            no_surat: req.body.noSurat,
-            tanggal_pengajuan: req.body.tglPengajuan,
-            file: fileName,
-            url: url
-        }, {
-            where: {
-                instansiId: instansiId
-            }
-        })
-        await Pelamar.update({
-            nama_lengkap: req.body.namaLengkap,
-            email: req.body.email,
-            alamat: req.body.alamat,
-            no_telepon: req.body.noTelp,
-            no_induk: req.body.noInduk
-        }, {
-            where: {
-                instansiId: instansiId
-            }
-        })
-
-        return res.status(200).json({ msg: "Data Berhasil Diperbaharui" });
-    } catch (error) {
-        console.error('Gagal Perbaharui Instansi, Surat, dan Pelamar:', error);
-        return res.status(500).json({ error: 'Terjadi kesalahan dalam perbaharui data' });
-    }
-}
-
 
 export const hapusDaftar = async (req, res) => {
     const instansiId = req.params.id
