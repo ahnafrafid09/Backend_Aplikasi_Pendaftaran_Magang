@@ -303,8 +303,3 @@ export const hapusDaftar = async (req, res) => {
         res.status(500).json({ error: 'Terjadi kesalahan dalam menghapus' });
     }
 }
-
-export const pelamarData = async (req, res) => {
-    const status = ['Diterima', 'Aktif', 'Selesai']
-
-}

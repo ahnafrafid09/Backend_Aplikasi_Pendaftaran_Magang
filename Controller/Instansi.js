@@ -10,6 +10,7 @@ export const getInstansi = async (req, res) => {
         console.log(error);
     }
 }
+
 export const getInstansibyId = async (req, res) => {
 
     try {
@@ -24,6 +25,7 @@ export const getInstansibyId = async (req, res) => {
         res.status(500).json({ error: 'Terjadi kesalahan dalam mencari' });
     }
 }
+
 export const deleteInstansi = async (req, res) => {
     const instansi = await Instansi.findOne({ where: { id: req.params.id } })
     if (!instansi) return res.status(404).json({ msg: "Instansi Tidak Tersedia" })
@@ -38,5 +40,31 @@ export const deleteInstansi = async (req, res) => {
     } catch (error) {
         console.log("Delete Instansi Gagal", error);
         res.status(400).json({ msg: "Terdapat Kesalahan Dalam Menghapus Instansi" })
+    }
+}
+
+export const editInstansi = async (req, res) => {
+    const instansiId = req.params.id;
+    
+    try {
+        const instansi = await Instansi.findOne({
+            where: {
+                id: instansiId
+            }
+        });
+
+        if (!instansi) {
+            return res.status(404).json({ error: "Instansi Tidak Ditemukan" });
+        }
+
+        const updatedInstansi = await instansi.update({
+            nama_instansi: req.body.nama_instansi, 
+            alamat: req.body.alamat,               
+            status: req.body.status                
+        });
+
+        res.status(200).json({ msg: "Instansi Berhasil Di Update" })
+    } catch (error) {
+        res.status(400).json({ msg: error.message })
     }
 }

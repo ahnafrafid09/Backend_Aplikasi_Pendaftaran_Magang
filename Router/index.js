@@ -1,10 +1,12 @@
-import Express from "express";
+import Express, { application } from "express";
 import { verifyToken } from "../Middleware/VerifToken.js";
 import { getUsers, Register, updateUser, deleteUser } from "../Controller/Login/User.js";
 import { refreshToken } from "../Controller/Login/RefreshToken.js";
-import { daftar, hapusDaftar, getDaftarbyId, editDaftar, getDaftar, getDaftarbyMenunggu, getDaftarbyDiterima, pelamarData } from "../Controller/Daftar.js";
-import { deleteInstansi, getInstansi, getInstansibyId } from "../Controller/Instansi.js";
+import { daftar, hapusDaftar, getDaftarbyId, editDaftar, getDaftar, getDaftarbyMenunggu, getDaftarbyDiterima} from "../Controller/Daftar.js";
+import { deleteInstansi, editInstansi, getInstansi, getInstansibyId } from "../Controller/Instansi.js";
 import { Login, Logout } from "../Controller/Login/Auth.js";
+import { editSurat, getSurat, getSuratbyID } from "../Controller/Surat.js";
+import { editPelamar, getPelamar, getPelamarbyID } from "../Controller/Pelamar.js";
 
 const router = Express.Router()
 // API Login dan User
@@ -28,8 +30,17 @@ router.delete('/api/daftar/:id', hapusDaftar)
 // API instansi
 router.get('/api/instansi', getInstansi)
 router.get('/api/instansi/:id', getInstansibyId)
+router.patch('/api/instansi/:id', editInstansi)
 router.delete('/api/instansi/:id', deleteInstansi)
 
-router.get('/api/pelamar', pelamarData)
+// API Pelamar
+router.get('/api/pelamar', getPelamar)
+router.get('/api/pelamar/:id', getPelamarbyID)
+router.patch('/api/pelamar/:id', editPelamar)
+
+// API Surat
+router.get('/api/surat', getSurat)
+router.get('/api/surat/:id', getSuratbyID)
+router.patch('/api/surat/:id', editSurat)
 export default router
 
