@@ -2,14 +2,9 @@ import Express, { application } from "express";
 import { verifyToken } from "../Middleware/VerifToken.js";
 import { getUsers, Register, updateUser, deleteUser } from "../Controller/Login/User.js";
 import { refreshToken } from "../Controller/Login/RefreshToken.js";
-<<<<<<< HEAD
-import { daftar, hapusDaftar, getDaftarbyId, getDaftar, getDaftarbyMenunggu, getDaftarbyDiterima, pelamarData } from "../Controller/Daftar.js";
-import { deleteInstansi, getInstansi, getInstansibyId } from "../Controller/Instansi.js";
-=======
-import { daftar, hapusDaftar, getDaftarbyId, editDaftar, getDaftar, getDaftarbyMenunggu, getDaftarbyDiterima} from "../Controller/Daftar.js";
-import { deleteInstansi, editInstansi, getInstansi, getInstansibyId } from "../Controller/Instansi.js";
->>>>>>> 3ae53a6d95bc41bfb60586d96aadc12f7eb7b23f
 import { Login, Logout } from "../Controller/Login/Auth.js";
+import { daftar, hapusDaftar, getDaftarbyId, getDaftar, getDaftarbyMenunggu, getDaftarbyDiterima, terimaMagang, tolakMagang } from "../Controller/Daftar.js";
+import { deleteInstansi, getInstansi, getInstansibyId, editInstansi } from "../Controller/Instansi.js";
 import { editSurat, getSurat, getSuratbyID } from "../Controller/Surat.js";
 import { editPelamar, getPelamar, getPelamarbyID } from "../Controller/Pelamar.js";
 
@@ -29,6 +24,8 @@ router.get('/api/daftar/:instansiId', getDaftarbyId)
 router.get('/api/daftar-menunggu', getDaftarbyMenunggu)
 router.get('/api/daftar-terima', getDaftarbyDiterima)
 router.post('/api/daftar', daftar)
+router.post('/api/daftar/terima/:id', terimaMagang)
+router.patch('/api/daftar/tolak/:id', tolakMagang)
 router.delete('/api/daftar/:id', hapusDaftar)
 
 // API instansi

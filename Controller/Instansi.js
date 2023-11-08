@@ -15,8 +15,8 @@ export const getInstansibyId = async (req, res) => {
 
     try {
         const response = await Instansi.findOne({
-            where:{
-                id:req.params.id
+            where: {
+                id: req.params.id
             }
         })
         res.status(200).json(response)
@@ -45,7 +45,7 @@ export const deleteInstansi = async (req, res) => {
 
 export const editInstansi = async (req, res) => {
     const instansiId = req.params.id;
-    
+
     try {
         const instansi = await Instansi.findOne({
             where: {
@@ -57,10 +57,10 @@ export const editInstansi = async (req, res) => {
             return res.status(404).json({ error: "Instansi Tidak Ditemukan" });
         }
 
-        const updatedInstansi = await instansi.update({
-            nama_instansi: req.body.nama_instansi, 
-            alamat: req.body.alamat,               
-            status: req.body.status                
+        await instansi.update({
+            nama_instansi: req.body.namaInstansi,
+            alamat: req.body.alamatInstansi,
+            kategori: req.body.kategori
         });
 
         res.status(200).json({ msg: "Instansi Berhasil Di Update" })

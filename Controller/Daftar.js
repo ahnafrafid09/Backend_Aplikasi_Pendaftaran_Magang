@@ -142,17 +142,14 @@ export const getDaftarbyDiterima = async (req, res) => {
     const totalPages = Math.ceil(totalRows / limit)
 
     try {
-        const result = await Pelamar.findAll({
-            include: [
-                {
-                    model: Instansi,
-                    where: { status: response },
-                    attributes: ["status", "nama_instansi"],
-                    include: {
-                        model: Magang,
-                    }
-                }
-            ],
+        const result = await Magang.findAll({
+            include: {
+                model: Instansi,
+                where: {
+                    status: response,
+                },
+            },
+
             offset: offset,
             limit: limit,
             order: [
@@ -244,5 +241,42 @@ export const hapusDaftar = async (req, res) => {
     } catch (error) {
         console.error('Gagal menghapus:', error);
         res.status(500).json({ error: 'Terjadi kesalahan dalam menghapus' });
+    }
+}
+
+export const terimaMagang = async (req, res) => {
+    const id = req.params.id
+    try {
+        await Instansi.update({
+            status: "Diterima",
+        }, {
+            where: { id: id }
+        })
+        await Magang.create({
+            tanggal_masuk: req.body.tglMasuk,
+            tanggal_selesai: req.body.tglSelesai,
+            bagian: req.body.bagian,
+            instansiId: id
+        })
+        res.status(201).json({ msg: "Pendaftaran Magang Berhasil Diterima" })
+    } catch (error) {
+        res.status(400).json({ msg: "Gagal Diperbarui" })
+        console.log("error", error);
+    }
+}
+
+export const tolakMagang = async (req, res) => {
+    const id = req.params.id
+    try {
+        await Instansi.update({
+            status: "Ditolak",
+        }, {
+            where: { id: id }
+        })
+
+        res.status(200).json({ msg: "Pendaftaran Magang Berhasil di Tolak" })
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({ msg: "Gagal Di Perbarui" })
     }
 }

@@ -16,7 +16,7 @@ const Magang = db.define('magang', {
     bagian: {
         type: DataTypes.ENUM,
         allowNull: false,
-        values: ['Sekertariat',
+        values: ['Sekretariat',
             'Statistik',
             'Aptika',
             'IKP',
