@@ -71,7 +71,7 @@ export const editSurat = async (req, res) => {
         }, {
             where: { id: suratId }
         })
-        res.status(200).json({ msg: "Data Berhasil Di Update" })
+        res.status(200).json({ msg: "Data Surat Berhasil Di Update" })
     } catch (error) {
         console.log("Edit Surat Error:", error);
         return res.status(500).json({ msg: "Data Gagal Di Update" })

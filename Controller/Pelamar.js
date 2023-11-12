@@ -16,8 +16,8 @@ export const getPelamarbyID = async (req, res) => {
 
     try {
         const response = await Pelamar.findOne({
-            where:{
-                id:req.params.id
+            where: {
+                id: req.params.id
             }
         })
         res.status(200).json(response)
@@ -40,12 +40,12 @@ export const editPelamar = async (req, res) => {
         if (!pelamar) {
             return res.status(404).json({ error: "Pelamar tidak ditemukan" });
         }
-        const updatePelamar = await pelamar.update({
-            nama_lengkap: req.body.nama_lengkap, 
-            email: req.body.email, 
-            alamat: req.body.alamat, 
-            no_telepon: req.body.no_telepon, 
-            no_induk: req.body.no_induk 
+        await pelamar.update({
+            nama_lengkap: req.body.nama_lengkap,
+            email: req.body.email,
+            alamat: req.body.alamat,
+            no_telepon: req.body.no_telepon,
+            no_induk: req.body.no_induk
         });
 
         res.status(200).json({ msg: "Pelamar Berhasil Di Update" })
@@ -54,4 +54,22 @@ export const editPelamar = async (req, res) => {
         res.status(500).json({ error: "Terjadi kesalahan dalam mengedit pelamar" });
     }
 };
+
+export const deletePelamar = async (req, res) => {
+    const pelamarId = req.params.id
+    const pelamar = await Pelamar.findOne({ where: { id: pelamarId } })
+    if (!pelamar) {
+        res.status(404).json({ msg: "Pelamar Tidak Ada" })
+    }
+
+    try {
+        await Pelamar.destroy({ where: { id: pelamarId } })
+
+        res.status(200).json({ msg: "Pelamar Berhasil Di Hapus" })
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({ msg: "Terjadi Kesalahan Dalam Menghapus Data" })
+    }
+
+}
 

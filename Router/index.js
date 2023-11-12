@@ -1,16 +1,17 @@
-import Express, { application } from "express";
-import { verifyToken } from "../Middleware/VerifToken.js";
+import Express from "express";
+import { verifyToken, adminOnly } from "../Middleware/VerifToken.js";
 import { getUsers, Register, updateUser, deleteUser } from "../Controller/Login/User.js";
 import { refreshToken } from "../Controller/Login/RefreshToken.js";
 import { Login, Logout } from "../Controller/Login/Auth.js";
-import { daftar, hapusDaftar, getDaftarbyId, getDaftar, getDaftarbyMenunggu, getDaftarbyDiterima, terimaMagang, tolakMagang } from "../Controller/Daftar.js";
+import { daftar, hapusDaftar, getDaftarbyId, getDaftar, getDaftarbyMenunggu, getDaftarbyDiterima, terimaMagang, tolakMagang, getDaftarSelesai } from "../Controller/Daftar.js";
 import { deleteInstansi, getInstansi, getInstansibyId, editInstansi } from "../Controller/Instansi.js";
 import { editSurat, getSurat, getSuratbyID } from "../Controller/Surat.js";
-import { editPelamar, getPelamar, getPelamarbyID } from "../Controller/Pelamar.js";
+import { deletePelamar, editPelamar, getPelamar, getPelamarbyID } from "../Controller/Pelamar.js";
+import { UpdateMagangInstansi } from "../Controller/InstansiMagang.js";
 
 const router = Express.Router()
 // API Login dan User
-router.get("/api/users", getUsers)
+router.get("/api/users", adminOnly, verifyToken, getUsers)
 router.patch("/api/users/:id", updateUser)
 router.delete("/api/users/:id", deleteUser)
 router.post("/api/register", Register)
@@ -23,6 +24,7 @@ router.get('/api/daftar', getDaftar)
 router.get('/api/daftar/:instansiId', getDaftarbyId)
 router.get('/api/daftar-menunggu', getDaftarbyMenunggu)
 router.get('/api/daftar-terima', getDaftarbyDiterima)
+router.get('/api/daftar-selesai', getDaftarSelesai)
 router.post('/api/daftar', daftar)
 router.post('/api/daftar/terima/:id', terimaMagang)
 router.patch('/api/daftar/tolak/:id', tolakMagang)
@@ -38,10 +40,14 @@ router.delete('/api/instansi/:id', deleteInstansi)
 router.get('/api/pelamar', getPelamar)
 router.get('/api/pelamar/:id', getPelamarbyID)
 router.patch('/api/pelamar/:id', editPelamar)
+router.delete('/api/pelamar/:id', deletePelamar)
 
 // API Surat
 router.get('/api/surat', getSurat)
 router.get('/api/surat/:id', getSuratbyID)
 router.patch('/api/surat/:id', editSurat)
+
+// API Instansi dan Magang
+router.patch('/api/instansi-magang/:instansiId', UpdateMagangInstansi)
 export default router
 
