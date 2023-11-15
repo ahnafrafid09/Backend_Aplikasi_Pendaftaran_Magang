@@ -39,25 +39,25 @@ export const editSurat = async (req, res) => {
     });
     if (!surat) return res.status(404).json({ msg: "Surat tidak ditemukan" });
 
+    const pdfFile = req.files.pdfFile;
     let fileName = ''
-    if (req.files === null) {
-        fileName = Surat.file
+    if (pdfFile === null) {
+        fileName = surat.file
     } else {
-        const pdfFile = req.files.pdfFile;
-        fileName = pdfFile.name
-        if (req.files && pdfFile) {
-            if (path.extname(pdfFile.name) !== '.pdf') {
-                return res.status(400).json({ msg: 'File harus berformat PDF' });
-            }
-            const filePath = `public/files/${surat.file}`;
+        const fileSize = pdfFile.data.length
+        const ext = path.extname(pdfFile.name);
+        fileName = pdfFile.md5 + ext;
+        const allowedType = ['.pdf'];
 
-            fs.unlinkSync(filePath)
-            pdfFile.mv(`public/files/${fileName}`, (err) => {
-                if (err) {
-                    return res.status(500).json({ msg: 'Gagal menyimpan berkas PDF.' });
-                }
-            });
-        }
+        if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ msg: "File Harus Berformat PDF" });
+        if (fileSize > 5000000) return res.status(422).json({ msg: "File Tidak Boleh Lebih Dari 5MB" });
+
+        const filePath = `public/files/${surat.file}`;
+        fs.unlinkSync(filePath);
+
+        pdfFile.mv(`public/files/${fileName}`, (err) => {
+            if (err) return res.status(500).json({ msg: 'Gagal menyimpan berkas PDF.' })
+        });
     }
     const noSurat = req.body.noSurat
     const tglPengajuan = req.body.tglPengajuan
@@ -66,7 +66,7 @@ export const editSurat = async (req, res) => {
         await Surat.update({
             no_surat: noSurat,
             tanggal_pengajuan: tglPengajuan,
-            file: fileName,
+            file: pdfFile.name,
             url: url,
         }, {
             where: { id: suratId }

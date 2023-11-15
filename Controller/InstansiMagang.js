@@ -2,15 +2,17 @@ import Instansi from "../Model/InstansiModel.js";
 import Magang from "../Model/MagangModel.js"
 import db from "../Database/db.js";
 import cron from "node-cron"
+import { Op } from "sequelize";
 
 const updateStatusToAktif = async () => {
     try {
-        const currentDate = new Date();
+        const currentDate = db.fn('NOW');
         const magangToUpdate = await Magang.findAll({
             where: {
-                tanggalMulai: { $lte: currentDate },
+                tanggal_masuk: { [Op.lte]: currentDate },
             },
         });
+
         for (const magang of magangToUpdate) {
             await Instansi.update({ status: 'Aktif' }, { where: { id: magang.instansiId } });
         }
@@ -19,16 +21,15 @@ const updateStatusToAktif = async () => {
     }
 };
 
-const updateStatusToSelesai = async () => {
+const updateStatusToSelesai = async (req, res) => {
     try {
-        const currentDate = new Date();
+        const currentDate = db.fn('NOW');;
         const magangToUpdate = await Magang.findAll({
             where: {
-                tanggalSelesai: { $lte: currentDate },
+                tanggal_selesai: { [Op.lte]: currentDate },
             },
         });
 
-        // Perbarui status instansi menjadi Selesai untuk setiap magang yang memenuhi kriteria
         for (const magang of magangToUpdate) {
             await Instansi.update({ status: 'Selesai' }, { where: { id: magang.instansiId } });
         }
@@ -37,7 +38,21 @@ const updateStatusToSelesai = async () => {
     }
 };
 
-const UpdateMagangInstansi = async (req, res) => {
+const runScheduler = async () => {
+    try {
+        await updateStatusToAktif();
+        await updateStatusToSelesai();
+        console.log('Scheduler executed successfully');
+    } catch (error) {
+        console.error('Error executing scheduler:', error);
+    }
+};
+
+export const startScheduler = () => {
+    cron.schedule('55 20 * * *', runScheduler);
+};
+
+export const UpdateMagangInstansi = async (req, res) => {
     try {
         const { instansiId } = req.params;
         const transaction = await db.transaction();
@@ -66,9 +81,6 @@ const UpdateMagangInstansi = async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 }
-cron.schedule('0 0 6 * *', async () => {
-    await updateStatusToAktif();
-    await updateStatusToSelesai();
-});
 
-export { UpdateMagangInstansi }
+
+

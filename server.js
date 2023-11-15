@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import db from "./Database/db.js";
 import router from "./Router/index.js";
 import fileUpload from 'express-fileupload'
+import { startScheduler } from "./Controller/InstansiMagang.js";
 dotenv.config()
 
 const app = express();
@@ -19,15 +20,14 @@ app.use(
     })
 );
 app.use(cookieParser())
-app.use(fileUpload({
-    limits: { fileSize: 10 * 1024 * 1024 } // Batas ukuran berkas: 10 MB
-}));
+app.use(fileUpload());
 app.use(express.static("public"));
+startScheduler()
 
 try {
     await db.authenticate()
     console.log('database connected');
-    // await db.sync();
+    // await Alasan.sync();
 
 } catch (error) {
     console.log(error);
@@ -36,7 +36,7 @@ try {
 app.use(router)
 
 app.get('/', (req, res) => {
-    res.send("hello world")
+    res.status(404).send("URL API TIDAK ADA")
 })
 
 app.listen(port, () => {
