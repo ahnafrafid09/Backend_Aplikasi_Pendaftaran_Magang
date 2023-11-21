@@ -60,6 +60,11 @@ export const getDaftarbyMenunggu = async (req, res) => {
         const response = await Instansi.findAll({
             where: {
                 status: 'Menunggu',
+                [Op.or]: [{
+                    nama_instansi: {
+                        [Op.like]: '%' + search + '%'
+                    }
+                }]
             },
             include: {
                 model: Surat,
@@ -110,7 +115,13 @@ export const getDaftarbyDiterima = async (req, res) => {
                 model: Instansi,
                 where: {
                     status: response,
+                    [Op.or]: [{
+                        nama_instansi: {
+                            [Op.like]: '%' + search + '%'
+                        }
+                    }]
                 },
+
             },
 
             offset: offset,
@@ -155,6 +166,11 @@ export const getDaftarSelesai = async (req, res) => {
         const result = await Instansi.findAll({
             where: {
                 status: response,
+                [Op.or]: [{
+                    nama_instansi: {
+                        [Op.like]: '%' + search + '%'
+                    }
+                }]
             }, include: { model: Surat, attributes: ["tanggal_pengajuan"] },
             offset: offset,
             limit: limit,

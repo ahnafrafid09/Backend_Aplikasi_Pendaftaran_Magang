@@ -105,8 +105,9 @@ export const daftar = async (req, res) => {
             await Surat.create({
                 no_surat: req.body.noSurat,
                 tanggal_pengajuan: req.body.tglPengajuan,
-                file: pdfFile.name,
+                file: fileName,
                 url: url,
+                fileName: pdfFile.name,
                 instansiId: instansi.id
             })
         });
@@ -183,7 +184,7 @@ export const tolakMagang = async (req, res) => {
             where: { id: id }
         })
 
-        await Alasan.create({ alasan: req.body.alasan, instansiId: id })
+        await Alasan.create({ alasan_tolak: req.body.alasan, instansiId: id })
 
         res.status(200).json({ msg: "Pendaftaran Magang Berhasil di Tolak" })
     } catch (error) {

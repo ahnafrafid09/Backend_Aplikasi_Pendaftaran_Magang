@@ -39,14 +39,18 @@ export const editSurat = async (req, res) => {
     });
     if (!surat) return res.status(404).json({ msg: "Surat tidak ditemukan" });
 
-    const pdfFile = req.files.pdfFile;
+
     let fileName = ''
-    if (pdfFile === null) {
-        fileName = surat.file
+    let file = ''
+    if (req.files === null) {
+        fileName = surat.fileName
+        file = surat.file
     } else {
+        const pdfFile = req.files.pdfFile;
+        fileName = pdfFile.name
         const fileSize = pdfFile.data.length
         const ext = path.extname(pdfFile.name);
-        fileName = pdfFile.md5 + ext;
+        file = pdfFile.md5 + ext;
         const allowedType = ['.pdf'];
 
         if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ msg: "File Harus Berformat PDF" });
@@ -55,18 +59,19 @@ export const editSurat = async (req, res) => {
         const filePath = `public/files/${surat.file}`;
         fs.unlinkSync(filePath);
 
-        pdfFile.mv(`public/files/${fileName}`, (err) => {
+        pdfFile.mv(`public/files/${file}`, (err) => {
             if (err) return res.status(500).json({ msg: 'Gagal menyimpan berkas PDF.' })
         });
     }
     const noSurat = req.body.noSurat
     const tglPengajuan = req.body.tglPengajuan
-    const url = `${req.protocol}://${req.get("host")}/files/${fileName}`;
+    const url = `${req.protocol}://${req.get("host")}/files/${file}`;
     try {
         await Surat.update({
             no_surat: noSurat,
             tanggal_pengajuan: tglPengajuan,
-            file: pdfFile.name,
+            fileName: fileName,
+            file: file,
             url: url,
         }, {
             where: { id: suratId }

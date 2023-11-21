@@ -8,7 +8,6 @@ const Surat = db.define('surat', {
     no_surat: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: false
     },
     tanggal_pengajuan: {
         type: DataTypes.DATEONLY,
@@ -16,6 +15,10 @@ const Surat = db.define('surat', {
     },
     file: {
         type: DataTypes.STRING,
+    },
+    fileName: {
+        type: DataTypes.STRING,
+        allowNull: false,
     },
     url: {
         type: DataTypes.STRING,
