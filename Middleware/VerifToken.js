@@ -14,8 +14,8 @@ export const verifyToken = (req, res, next) => {
 }
 
 export const adminOnly = (req, res, next) => {
-    const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1]
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1]
   if (!token) {
     return res.status(401).json({ error: 'Access denied. No token provided' });
   }
@@ -23,7 +23,7 @@ export const adminOnly = (req, res, next) => {
   try {
     const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET); // Ganti dengan kunci rahasia yang digunakan saat mengeluarkan token
 
-    if (decoded && decoded.role && decoded.role.includes('admin')) {
+    if (decoded && decoded.role === "admin") {
       next();
     } else {
       return res.status(403).json({ error: 'Access denied. Admin only' });

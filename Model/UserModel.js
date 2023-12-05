@@ -15,13 +15,13 @@ const Users = db.define('users', {
     refresh_token: {
         type: DataTypes.TEXT
     },
-    name:{
+    name: {
         type: DataTypes.STRING
     },
-    role:{
+    role: {
         type: DataTypes.ENUM,
-        values:['admin', 'user'],
-        defaultValue:"user"
+        values: ['admin', 'user'],
+        defaultValue: "user"
     }
 }, {
     freezeTableName: true

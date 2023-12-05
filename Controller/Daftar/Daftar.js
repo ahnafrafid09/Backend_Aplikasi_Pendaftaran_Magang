@@ -6,6 +6,7 @@ import path from "path";
 import { Op } from "sequelize";
 import fs from "fs";
 import Alasan from "../../Model/AlasanModel.js";
+import Users from "../../Model/UserModel.js"
 
 export const getDaftar = async (req, res) => {
     const page = parseInt(req.query.page) || 0
@@ -85,6 +86,7 @@ export const daftar = async (req, res) => {
             nama_instansi: req.body.namaInstansi,
             alamat: req.body.alamatInstansi,
             kategori: req.body.kategori,
+            userId : req.body.userId
         })
 
         if (req.files === null) return res.status(400).json({ msg: 'Mohon unggah berkas PDF.' });

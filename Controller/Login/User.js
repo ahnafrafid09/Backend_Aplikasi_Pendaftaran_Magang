@@ -1,5 +1,6 @@
 import Users from "../../Model/UserModel.js";
 import bcrypt from "bcrypt"
+import { Op, or } from "sequelize";
 
 
 export const getUsers = async (req, res) => {
@@ -15,12 +16,28 @@ export const getUsers = async (req, res) => {
 
 export const Register = async (req, res) => {
     const { username, email, name, password, confPassword, role } = req.body
-    if (password.length && confPassword.length < 8) return res.status(400).json({ msg: "Password dan Confirm Password Kurang Dari 8" })
+    if (!username || !email || !name || !password || !confPassword) return res.status(400).json({ msg: "Harap Isi Semua" });
+
+    if (password.length && confPassword.length < 8) return res.status(400).json({ msg: "Password Kurang Dari 8 Karakter" })
     if (password !== confPassword) return res.status(400).json({ msg: "Password dan Confirm Password Tidak Cocok" })
-    
+
     const salt = await bcrypt.genSalt()
     const hashPassword = await bcrypt.hash(password, salt)
     try {
+        console.log("Username:", username);
+        console.log("Email:", email);
+
+        const existingUser = await Users.findOne({
+            where: {
+                [Op.or]: [{ username: username }, { email: email }]
+            }
+        });
+
+        if (existingUser) {
+            return res.status(400).json({ msg: "Username atau Email sudah terdaftar" });
+        }
+        console.log("Existing User:", existingUser);
+
         await Users.create({
             username: username,
             name: name,

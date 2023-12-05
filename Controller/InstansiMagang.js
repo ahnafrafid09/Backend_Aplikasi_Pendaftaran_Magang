@@ -49,7 +49,7 @@ const runScheduler = async () => {
 };
 
 export const startScheduler = () => {
-    cron.schedule('55 20 * * *', runScheduler);
+    cron.schedule('01 0 * * *', runScheduler);
 };
 
 export const UpdateMagangInstansi = async (req, res) => {

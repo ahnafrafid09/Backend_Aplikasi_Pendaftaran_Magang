@@ -1,5 +1,6 @@
 import { Sequelize } from "sequelize";
 import db from "../Database/db.js";
+import Users from "./UserModel.js";
 const { DataTypes } = Sequelize
 const Instansi = db.define('instansi', {
     nama_instansi: {
@@ -21,9 +22,19 @@ const Instansi = db.define('instansi', {
         values: ['Menunggu', 'Diterima', 'Aktif', 'Ditolak', 'Selesai'],
         defaultValue: 'Menunggu'
     },
+    userId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        }
+    }
 }, {
     freezeTableName: true
 })
+
+Users.hasMany(Instansi)
+Instansi.belongsTo(Users, { foreignKey: "userId" })
 
 
 export default Instansi

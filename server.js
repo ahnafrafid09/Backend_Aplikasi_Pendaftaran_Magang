@@ -27,7 +27,7 @@ startScheduler()
 try {
     await db.authenticate()
     console.log('database connected');
-    // await Alasan.sync();
+    // await db.sync();
 
 } catch (error) {
     console.log(error);

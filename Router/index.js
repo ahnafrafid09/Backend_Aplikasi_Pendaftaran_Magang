@@ -12,7 +12,7 @@ import { UpdateMagangInstansi } from "../Controller/InstansiMagang.js";
 
 const router = Express.Router()
 // API Login dan User
-router.get("/api/users", adminOnly, verifyToken, getUsers)
+router.get("/api/users", getUsers)
 router.patch("/api/users/:id", updateUser)
 router.delete("/api/users/:id", deleteUser)
 router.post("/api/register", Register)
@@ -49,7 +49,7 @@ router.patch('/api/surat/:id', editSurat)
 router.patch('/api/instansi-magang/:instansiId', UpdateMagangInstansi)
 
 // API Instansi By Status
-router.get('/api/daftar-menunggu', getDaftarbyMenunggu)
+router.get('/api/daftar-menunggu', verifyToken, adminOnly, getDaftarbyMenunggu)
 router.get('/api/daftar-terima', getDaftarbyDiterima)
 router.get('/api/daftar-selesai', getDaftarSelesai)
 router.get('/api/daftar-selesai/:instansiId', getDaftarByIdSelesai)
