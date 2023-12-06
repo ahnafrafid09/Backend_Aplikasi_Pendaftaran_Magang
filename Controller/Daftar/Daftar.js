@@ -7,6 +7,7 @@ import { Op } from "sequelize";
 import fs from "fs";
 import Alasan from "../../Model/AlasanModel.js";
 import Users from "../../Model/UserModel.js"
+import { jwtDecode } from "jwt-decode";
 
 export const getDaftar = async (req, res) => {
     const page = parseInt(req.query.page) || 0
@@ -79,6 +80,9 @@ export const getDaftarbyId = async (req, res) => {
 
 
 export const daftar = async (req, res) => {
+    const token = req.headers.authorization.split(' ')[1];
+    const decoded = jwtDecode(token)
+    const userId = decoded.userId
     const pelamar = JSON.parse(req.body.pelamar);
     if (!pelamar || pelamar.length === 0 || !req.body.noSurat || !req.body.tglPengajuan || !req.body.namaInstansi || !req.body.alamatInstansi || !req.body.kategori) return res.status(400).json({ msg: 'Data Harus di Isi Semua' });
     try {
@@ -86,7 +90,7 @@ export const daftar = async (req, res) => {
             nama_instansi: req.body.namaInstansi,
             alamat: req.body.alamatInstansi,
             kategori: req.body.kategori,
-            userId : req.body.userId
+            userId: userId
         })
 
         if (req.files === null) return res.status(400).json({ msg: 'Mohon unggah berkas PDF.' });
@@ -124,6 +128,7 @@ export const daftar = async (req, res) => {
                 instansiId: instansi.id
             })
         }
+        console.log(userId)
         res.status(201).json({ msg: "Data Berhasil Disimpan" });
     } catch (error) {
         console.error('Gagal membuat Instansi, Surat, dan Pelamar:', error);

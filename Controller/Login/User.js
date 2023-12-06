@@ -1,12 +1,12 @@
 import Users from "../../Model/UserModel.js";
 import bcrypt from "bcrypt"
-import { Op, or } from "sequelize";
+import { Op } from "sequelize";
 
 
 export const getUsers = async (req, res) => {
     try {
         const users = await Users.findAll({
-            attributes: ["id", "username", "email", "name"]
+            attributes: ["id", "username", "email", "name", "role"]
         });
         res.status(200).json(users)
     } catch (error) {

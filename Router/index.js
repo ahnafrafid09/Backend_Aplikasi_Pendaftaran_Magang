@@ -12,46 +12,45 @@ import { UpdateMagangInstansi } from "../Controller/InstansiMagang.js";
 
 const router = Express.Router()
 // API Login dan User
-router.get("/api/users", getUsers)
-router.patch("/api/users/:id", updateUser)
-router.delete("/api/users/:id", deleteUser)
+router.get("/api/users", adminOnly, getUsers)
+router.delete("/api/users/:id", adminOnly, deleteUser)
 router.post("/api/register", Register)
 router.post("/api/login", Login)
 router.get("/api/token", refreshToken)
 router.delete("/api/logout", Logout)
 
 // API daftar
-router.get('/api/daftar', getDaftar)
-router.get('/api/daftar/:instansiId', getDaftarbyId)
-router.post('/api/daftar', daftar)
-router.post('/api/daftar/terima/:id', terimaMagang)
-router.patch('/api/daftar/tolak/:id', tolakMagang)
-router.delete('/api/daftar/:id', hapusDaftar)
+router.get('/api/daftar', adminOnly, getDaftar)
+router.get('/api/daftar/:instansiId', verifyToken, getDaftarbyId)
+router.post('/api/daftar', verifyToken, daftar)
+router.post('/api/daftar/terima/:id', adminOnly, terimaMagang)
+router.patch('/api/daftar/tolak/:id', adminOnly, tolakMagang)
+router.delete('/api/daftar/:id', verifyToken, hapusDaftar)
 
 // API instansi
-router.get('/api/instansi', getInstansi)
-router.get('/api/instansi/:id', getInstansibyId)
-router.patch('/api/instansi/:id', editInstansi)
-router.delete('/api/instansi/:id', deleteInstansi)
+router.get('/api/instansi', adminOnly, getInstansi)
+router.get('/api/instansi/:id', adminOnly, getInstansibyId)
+router.patch('/api/instansi/:id', adminOnly, editInstansi)
+router.delete('/api/instansi/:id', adminOnly, deleteInstansi)
 
 // API Pelamar
-router.get('/api/pelamar', getPelamar)
-router.get('/api/pelamar/:id', getPelamarbyID)
-router.patch('/api/pelamar/:id', editPelamar)
-router.delete('/api/pelamar/:id', deletePelamar)
+router.get('/api/pelamar', adminOnly, getPelamar)
+router.get('/api/pelamar/:id', adminOnly, getPelamarbyID)
+router.patch('/api/pelamar/:id', adminOnly, editPelamar)
+router.delete('/api/pelamar/:id', adminOnly, deletePelamar)
 
 // API Surat
-router.get('/api/surat', getSurat)
-router.get('/api/surat/:id', getSuratbyID)
-router.patch('/api/surat/:id', editSurat)
+router.get('/api/surat', adminOnly, getSurat)
+router.get('/api/surat/:id', adminOnly, getSuratbyID)
+router.patch('/api/surat/:id', adminOnly, editSurat)
 
 // API Instansi dan Magang
-router.patch('/api/instansi-magang/:instansiId', UpdateMagangInstansi)
+router.patch('/api/instansi-magang/:instansiId', adminOnly, UpdateMagangInstansi)
 
 // API Instansi By Status
-router.get('/api/daftar-menunggu', verifyToken, adminOnly, getDaftarbyMenunggu)
-router.get('/api/daftar-terima', getDaftarbyDiterima)
-router.get('/api/daftar-selesai', getDaftarSelesai)
-router.get('/api/daftar-selesai/:instansiId', getDaftarByIdSelesai)
+router.get('/api/daftar-menunggu', adminOnly, getDaftarbyMenunggu)
+router.get('/api/daftar-terima', adminOnly, getDaftarbyDiterima)
+router.get('/api/daftar-selesai', adminOnly, getDaftarSelesai)
+router.get('/api/daftar-selesai/:instansiId', verifyToken, getDaftarByIdSelesai)
 export default router
 

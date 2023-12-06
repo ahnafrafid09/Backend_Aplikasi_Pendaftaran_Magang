@@ -22,19 +22,13 @@ const Instansi = db.define('instansi', {
         values: ['Menunggu', 'Diterima', 'Aktif', 'Ditolak', 'Selesai'],
         defaultValue: 'Menunggu'
     },
-    userId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        validate: {
-            notEmpty: true
-        }
-    }
 }, {
     freezeTableName: true
 })
 
 Users.hasMany(Instansi)
-Instansi.belongsTo(Users, { foreignKey: "userId" })
+Instansi.belongsTo(Users)
+
 
 
 export default Instansi
