@@ -6,7 +6,6 @@ import path from "path";
 import { Op } from "sequelize";
 import fs from "fs";
 import Alasan from "../../Model/AlasanModel.js";
-import Users from "../../Model/UserModel.js"
 import { jwtDecode } from "jwt-decode";
 
 export const getDaftar = async (req, res) => {

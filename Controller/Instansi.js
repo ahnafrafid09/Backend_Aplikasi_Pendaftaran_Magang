@@ -25,14 +25,13 @@ export const getInstansibyId = async (req, res) => {
         res.status(500).json({ error: 'Terjadi kesalahan dalam mencari' });
     }
 }
-
 export const getInstansiByUserId = async (req, res) => {
     const userId = req.params.userId;
 
     try {
         const instansi = await Instansi.findAll({
             where: {
-                userId: userId 
+                userId: userId
             },
             attributes: ["id", "nama_instansi", "alamat", "status"]
         });
