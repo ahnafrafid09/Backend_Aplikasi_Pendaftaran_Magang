@@ -26,6 +26,24 @@ export const getInstansibyId = async (req, res) => {
     }
 }
 
+export const getInstansiByUserId = async (req, res) => {
+    const userId = req.params.userId;
+
+    try {
+        const instansi = await Instansi.findAll({
+            where: {
+                userId: userId 
+            },
+            attributes: ["id", "nama_instansi", "alamat", "status"]
+        });
+
+        res.status(200).json(instansi);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: 'Terjadi kesalahan dalam mencari' });
+    }
+};
+
 export const deleteInstansi = async (req, res) => {
     const instansi = await Instansi.findOne({ where: { id: req.params.id } })
     if (!instansi) return res.status(404).json({ msg: "Instansi Tidak Tersedia" })

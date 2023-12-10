@@ -96,7 +96,7 @@ export const deleteUser = async (req, res) => {
     try {
         await Users.destroy({
             where: {
-                id: user.id
+                id: req.params.id
             }
         })
         return res.status(200).json({ msg: "User Berhasil di Hapus" })
@@ -105,3 +105,105 @@ export const deleteUser = async (req, res) => {
     }
 }
 
+export const updatePassword = async (req, res) => {
+    const { username, oldPassword, newPassword, confNewPassword } = req.body;
+
+    try {
+        if (!username || !oldPassword || !newPassword || !confNewPassword) {
+            return res.status(400).json({ msg: "Data Tidak Lengkap" });
+        }
+
+        const user = await Users.findOne({
+            where: {
+                username: username
+            },
+        });
+
+        if (!user) {
+            return res.status(404).json({ msg: "User Tidak Ditemukan" });
+        }
+
+        const isPasswordValid = await bcrypt.compare(oldPassword, user.password);
+        if (!isPasswordValid) {
+            return res.status(400).json({ msg: "Password Lama Salah" });
+        }
+
+        if (newPassword.length < 8) {
+            return res.status(400).json({ msg: "Password Baru Kurang Dari 8 Karakter" });
+        }
+
+        if (newPassword !== confNewPassword) {
+            return res.status(400).json({ msg: "Password Baru dan Konfirmasi Password Baru Tidak Cocok" });
+        }
+
+        const salt = await bcrypt.genSalt();
+        const hashNewPassword = await bcrypt.hash(newPassword, salt);
+
+        await Users.update(
+            {
+                password: hashNewPassword,
+            },
+            {
+                where: {
+                    username: username,
+                },
+            }
+        );
+
+        return res.status(200).json({ msg: "Password Berhasil Diubah" });
+    } catch (error) {
+        return res.status(400).json({ msg: error.message });
+    }
+};
+
+export const updateEmail = async (req, res) => {
+    const { username, newEmail, password } = req.body;
+
+    if (!username || !newEmail || !password) {
+        return res.status(400).json({ msg: "Data Tidak Lengkap" });
+    }
+
+    try {
+        let user = await Users.findOne({
+            where: {
+                id: req.params.id
+            },
+        });
+
+        if (!user) {
+            return res.status(404).json({ msg: "User Tidak Ditemukan" });
+        }
+
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+
+        if (!isPasswordValid) {
+            return res.status(400).json({ msg: "Password Salah" });
+        }
+
+        const existingEmail = await Users.findOne({
+            where: {
+                email: newEmail,
+                [Op.not]: [{ id: req.params.id }],
+            },
+        });
+
+        if (existingEmail) {
+            return res.status(400).json({ msg: "Email sudah digunakan oleh pengguna lain" });
+        }
+
+        await Users.update(
+            {
+                email: newEmail,
+            },
+            {
+                where: {
+                    id: req.params.id,
+                },
+            }
+        );
+
+        return res.status(200).json({ msg: "Email Berhasil Diubah" });
+    } catch (error) {
+        return res.status(400).json({ msg: error.message });
+    }
+};

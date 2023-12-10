@@ -1,6 +1,7 @@
 import { Sequelize } from "sequelize";
 import db from "../Database/db.js";
 import Users from "./UserModel.js";
+
 const { DataTypes } = Sequelize
 const Instansi = db.define('instansi', {
     nama_instansi: {
