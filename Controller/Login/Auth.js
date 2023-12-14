@@ -30,6 +30,7 @@ export const Login = async (req, res) => {
         res.cookie('refreshToken', refreshToken, {
             httpOnly: true,
             maxAge: 24 * 60 * 60 * 1000,
+            sameSite: 'Lax',
             // Code Di Bawah Digunakan Pada Saat Menggunakan https
             // secure : true
         })

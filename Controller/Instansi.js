@@ -1,5 +1,5 @@
 import Instansi from "../Model/InstansiModel.js";
-import { jwtDecode } from "jwt-decode";
+
 
 export const getInstansi = async (req, res) => {
     try {
@@ -26,25 +26,6 @@ export const getInstansibyId = async (req, res) => {
         res.status(500).json({ error: 'Terjadi kesalahan dalam mencari' });
     }
 }
-export const getInstansiByUserId = async (req, res) => {
-    try {
-        const token = req.headers.authorization.split(' ')[1];
-        const decoded = jwtDecode(token);
-        const userId = decoded.userId;
-
-        const instansi = await Instansi.findAll({
-            where: {
-                userId: userId
-            },
-            attributes: ["id", "nama_instansi", "alamat", "status"]
-        });
-
-        res.status(200).json(instansi);
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ error: 'Terjadi kesalahan dalam mencari' });
-    }
-};
 
 export const deleteInstansi = async (req, res) => {
     const instansi = await Instansi.findOne({ where: { id: req.params.id } })

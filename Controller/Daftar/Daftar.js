@@ -47,6 +47,28 @@ export const getDaftar = async (req, res) => {
     });
 }
 
+export const getInstansiByUserId = async (req, res) => {
+    try {
+        const token = req.headers.authorization.split(' ')[1];
+        const decoded = jwtDecode(token);
+        console.log(decoded.userId);
+        const userId = decoded.userId
+
+        const instansi = await Instansi.findAll({
+            where: {
+                userId: userId
+            },
+            include: [Surat, Magang, Pelamar],
+        });
+
+        res.status(200).json(instansi);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: 'Terjadi kesalahan dalam mencari' });
+    }
+};
+
+
 export const getDaftarbyId = async (req, res) => {
     try {
         const instansiID = req.params.instansiId;
@@ -127,7 +149,6 @@ export const daftar = async (req, res) => {
                 instansiId: instansi.id
             })
         }
-        console.log(userId)
         res.status(201).json({ msg: "Data Berhasil Disimpan" });
     } catch (error) {
         console.error('Gagal membuat Instansi, Surat, dan Pelamar:', error);

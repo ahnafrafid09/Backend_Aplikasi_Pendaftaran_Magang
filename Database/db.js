@@ -1,8 +1,8 @@
 import { Sequelize } from "sequelize";
 
-const db = new Sequelize('db_pengajuan_magang', 'root', '', {
+const db = new Sequelize('db_pendaftaran_magang', 'root', '', {
     host: 'localhost',
-    dialect : "mysql"
+    dialect: "mysql"
 });
 
 
