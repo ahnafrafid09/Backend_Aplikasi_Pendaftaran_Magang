@@ -69,6 +69,8 @@ export const Register = async (req, res) => {
     if (password.length && confPassword.length < 8) return res.status(400).json({ msg: "Password Kurang Dari 8 Karakter" })
     if (password !== confPassword) return res.status(400).json({ msg: "Password dan Confirm Password Tidak Cocok" })
 
+    if (username.includes(" ")) return res.status(400).json({ msg: "Username tidak boleh mengandung spasi" });
+
     const salt = await bcrypt.genSalt()
     const hashPassword = await bcrypt.hash(password, salt)
     try {
@@ -159,16 +161,17 @@ export const deleteUser = async (req, res) => {
 }
 
 export const updatePassword = async (req, res) => {
-    const { username, oldPassword, newPassword, confNewPassword } = req.body;
+    const { oldPassword, newPassword, confNewPassword } = req.body;
+    const id = req.params.id
 
     try {
-        if (!username || !oldPassword || !newPassword || !confNewPassword) {
+        if (!oldPassword || !newPassword || !confNewPassword) {
             return res.status(400).json({ msg: "Data Tidak Lengkap" });
         }
 
         const user = await Users.findOne({
             where: {
-                username: username
+                id: id
             },
         });
 
@@ -198,7 +201,7 @@ export const updatePassword = async (req, res) => {
             },
             {
                 where: {
-                    username: username,
+                    id: id
                 },
             }
         );

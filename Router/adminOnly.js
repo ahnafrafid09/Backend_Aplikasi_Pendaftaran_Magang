@@ -36,7 +36,6 @@ adminRoute.patch('/surat/:id', adminOnly, editSurat)
 adminRoute.get('/daftar-menunggu', adminOnly, getDaftarbyMenunggu)
 adminRoute.get('/daftar-terima', adminOnly, getDaftarbyDiterima)
 adminRoute.get('/daftar-selesai', adminOnly, getDaftarSelesai)
-adminRoute.get('/daftar-selesai/:instansiId', adminOnly, getDaftarByIdSelesai)
 adminRoute.patch('/instansi-magang/:instansiId', adminOnly, UpdateMagangInstansi)
 
 export default adminRoute

@@ -74,17 +74,7 @@ export const getDaftarbyId = async (req, res) => {
         const instansiID = req.params.instansiId;
 
         const dataInstansi = await Instansi.findByPk(instansiID, {
-            include: [
-                {
-                    model: Pelamar
-                },
-                {
-                    model: Surat
-                },
-                {
-                    model: Magang
-                }
-            ],
+            include: [Surat, Magang, Pelamar, Alasan]
 
         });
 

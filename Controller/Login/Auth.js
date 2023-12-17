@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from 'bcrypt'
 
 export const Login = async (req, res) => {
+
     try {
         const user = await Users.findAll({
             where: {
@@ -10,7 +11,7 @@ export const Login = async (req, res) => {
             }
         });
         const match = await bcrypt.compare(req.body.password, user[0].password)
-        if (!match) return res.status(400).json({ msg: "Password Salah" })
+        if (!match) return res.status(400).json({ msg: "User dan Password Tidak Cocok" })
         const userId = user[0].id
         const username = user[0].username
         const name = user[0].name
@@ -30,13 +31,14 @@ export const Login = async (req, res) => {
         res.cookie('refreshToken', refreshToken, {
             httpOnly: true,
             maxAge: 24 * 60 * 60 * 1000,
-            sameSite: 'Lax',
+            // sameSite: 'None',
             // Code Di Bawah Digunakan Pada Saat Menggunakan https
             // secure : true
         })
         res.status(200).json({ role: role, accessToken })
     } catch (error) {
-        res.status(404).json({ msg: "User tidak ditemukan" })
+        console.error('Error during token refresh:', error);
+        res.status(404).json({ msg: "User dan Password Tidak Cocok" })
     }
 
 }

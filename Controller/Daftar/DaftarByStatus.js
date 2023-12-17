@@ -8,9 +8,9 @@ import Alasan from "../../Model/AlasanModel.js";
 
 export const getDaftarByIdSelesai = async (req, res) => {
     try {
-        const instansiID = req.params.instansiId;
+        const instansiId = req.params.instansiId;
 
-        const dataInstansi = await Instansi.findByPk(instansiID, {
+        const dataInstansi = await Instansi.findByPk(instansiId, {
             include: [
                 {
                     model: Pelamar
