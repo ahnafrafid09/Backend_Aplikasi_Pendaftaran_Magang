@@ -1,5 +1,6 @@
 import Users from "../../Model/UserModel.js";
-import bcrypt, { genSalt, hash } from "bcrypt"
+import bcrypt from "bcrypt"
+import { jwtDecode } from "jwt-decode";
 import { Op } from "sequelize";
 
 
@@ -162,7 +163,10 @@ export const deleteUser = async (req, res) => {
 
 export const updatePassword = async (req, res) => {
     const { oldPassword, newPassword, confNewPassword } = req.body;
-    const id = req.params.id
+    const token = req.headers.authorization.split(' ')[1];
+    const decoded = jwtDecode(token);
+    console.log(decoded.userId);
+    const userId = decoded.userId
 
     try {
         if (!oldPassword || !newPassword || !confNewPassword) {
@@ -171,7 +175,7 @@ export const updatePassword = async (req, res) => {
 
         const user = await Users.findOne({
             where: {
-                id: id
+                id: userId
             },
         });
 
@@ -201,7 +205,7 @@ export const updatePassword = async (req, res) => {
             },
             {
                 where: {
-                    id: id
+                    id: userId
                 },
             }
         );

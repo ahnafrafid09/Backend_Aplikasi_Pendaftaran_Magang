@@ -11,7 +11,7 @@ loginRoute.get('/instansi/user', verifyToken, getInstansiByUserId)
 loginRoute.get('/daftar/:instansiId', verifyToken, getDaftarbyId)
 loginRoute.get('/daftar-selesai/:instansiId', verifyToken, getDaftarByIdSelesai)
 loginRoute.post('/daftar', verifyToken, daftar)
-loginRoute.patch("/change-password/:id", verifyToken, updatePassword)
+loginRoute.patch("/change-password", verifyToken, updatePassword)
 loginRoute.patch("/user/:id/change-email", verifyToken, updateEmail)
 
 export default loginRoute
