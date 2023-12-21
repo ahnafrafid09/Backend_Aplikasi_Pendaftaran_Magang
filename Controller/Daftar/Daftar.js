@@ -3,55 +3,36 @@ import Magang from "../../Model/MagangModel.js";
 import Pelamar from "../../Model/PelamarModel.js";
 import Surat from "../../Model/SuratModel.js";
 import path from "path";
-import { Op } from "sequelize";
 import fs from "fs";
 import Alasan from "../../Model/AlasanModel.js";
 import { jwtDecode } from "jwt-decode";
 
-export const getDaftar = async (req, res) => {
-    const page = parseInt(req.query.page) || 0
-    const limit = parseInt(req.query.limit) || 10
-    const search = (req.query.search_query) || ""
-    const offset = limit * page
-    const totalRows = await Instansi.count({
-        where: {
-            [Op.or]: [{
-                nama_instansi: {
-                    [Op.like]: '%' + search + '%'
-                }
-            }]
-        }
-    })
-    const totalPages = Math.ceil(totalRows / limit)
-    const result = await Instansi.findAll({
-        include: [Surat, Magang, Pelamar],
-        where: {
-            [Op.or]: [{
-                nama_instansi: {
-                    [Op.like]: '%' + search + '%'
-                }
-            }]
-        },
-        offset: offset,
-        limit: limit,
-        order: [
-            ['id', 'DESC']
-        ]
-    })
-    res.json({
-        result: result,
-        page: page,
-        limit: limit,
-        totalRows: totalRows,
-        totalPage: totalPages
-    });
-}
+export const getJumlahStatus = async (req, res) => {
+    try {
+        const total = await Instansi.count();
+        const menunggu = await Instansi.count({ where: { status: 'Menunggu' } });
+        const aktif = await Instansi.count({ where: { status: 'Aktif' } });
+        const diterima = await Instansi.count({ where: { status: 'Diterima' } });
+        const selesai = await Instansi.count({ where: { status: 'Selesai' } });
+
+        const jumlahStatus = {
+            total,
+            menunggu,
+            aktif,
+            diterima,
+            selesai
+        };
+        res.status(200).json(jumlahStatus);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: 'Terjadi kesalahan dalam menghitung jumlah status' });
+    }
+};
 
 export const getInstansiByUserId = async (req, res) => {
     try {
         const token = req.headers.authorization.split(' ')[1];
         const decoded = jwtDecode(token);
-        console.log(decoded.userId);
         const userId = decoded.userId
 
         const instansi = await Instansi.findAll({

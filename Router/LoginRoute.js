@@ -5,6 +5,7 @@ import { getInstansiByUserId, daftar } from "../Controller/Daftar/Daftar.js";
 import { getDaftarbyId } from "../Controller/Daftar/Daftar.js";
 import { getDaftarByIdSelesai } from "../Controller/Daftar/DaftarByStatus.js";
 
+
 const loginRoute = Express.Router()
 
 loginRoute.get('/instansi/user', verifyToken, getInstansiByUserId)

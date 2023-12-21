@@ -7,6 +7,7 @@ import { deletePelamar, editPelamar, getPelamar, getPelamarbyID } from "../Contr
 import { editSurat, getSurat, getSuratbyID } from "../Controller/Surat.js";
 import { UpdateMagangInstansi } from "../Controller/InstansiMagang.js";
 import { getInstansibyId, deleteInstansi, editInstansi } from "../Controller/Instansi.js";
+import { getJumlahStatus } from "../Controller/Daftar/Daftar.js";
 
 const adminRoute = Express.Router()
 
@@ -15,6 +16,7 @@ adminRoute.get("/user/:userId", adminOnly, getUserById)
 adminRoute.patch('/user/:id', adminOnly, updateUser)
 adminRoute.delete("/user/:id", adminOnly, deleteUser)
 
+adminRoute.get('/jumlah-daftar', adminOnly, getJumlahStatus)
 adminRoute.post('/daftar/terima/:id', adminOnly, terimaMagang)
 adminRoute.patch('/daftar/tolak/:id', adminOnly, tolakMagang)
 
