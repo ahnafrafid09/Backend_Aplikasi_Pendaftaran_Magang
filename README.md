@@ -16,7 +16,7 @@ Pastikan Anda memiliki [Node.js](https://nodejs.org/) dan [npm](https://www.npmj
 2. Masuk kedalam folder projek ini tersimpan
 
    ```bash
-   cd Backend_Pendaftaran_Magang.git
+   cd Backend_Pendaftaran_Magang
 
    ```
 
