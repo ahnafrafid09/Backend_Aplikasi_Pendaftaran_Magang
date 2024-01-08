@@ -165,7 +165,6 @@ export const updatePassword = async (req, res) => {
     const { oldPassword, newPassword, confNewPassword } = req.body;
     const token = req.headers.authorization.split(' ')[1];
     const decoded = jwtDecode(token);
-    console.log(decoded.userId);
     const userId = decoded.userId
 
     try {

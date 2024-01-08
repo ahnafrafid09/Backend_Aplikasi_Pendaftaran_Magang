@@ -1,6 +1,6 @@
-# Backend
+# Backend Pendaftaran Magang Diskominfo
 
-Ini adalah backend untuk aplikasi pendaftaran magang
+Ini adalah backend untuk aplikasi pendaftaran magang Diskominfo
 
 ## Instalasi
 
@@ -27,7 +27,9 @@ Pastikan Anda memiliki [Node.js](https://nodejs.org/) dan [npm](https://www.npmj
 
    ```
 
-4. Menjalankan aplikasi
+4. Import database yang ada pada folder database
+
+5. Menjalankan aplikasi
    ```bash
    npm run dev
    ```
