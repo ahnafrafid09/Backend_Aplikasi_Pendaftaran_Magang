@@ -35,7 +35,7 @@ try {
 app.use(router)
 
 app.get('/', (req, res) => {
-    res.status(404).send("Selamat Datang Di Dalam API Magang Diskominfo")
+    res.status(200).send("Selamat Datang Di Dalam API Magang Diskominfo")
 })
 
 app.listen(port, () => {

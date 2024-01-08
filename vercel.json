@@ -1,0 +1,23 @@
+{
+    "version": 2,
+    "builds": [
+      {
+        "src": "server.js", 
+        "use": "@vercel/node"
+      }
+    ],
+    "routes": [
+      {
+        "src": "/api/(.*)", 
+        "dest": "/server.js"
+      },
+      {
+        "src": "/(.*)",
+        "dest": "/server.js"
+      }
+    ],
+    "env": {
+       "ACCESS_TOKEN_SECRET" : "jdasdjasojiodj1j0w0ndsjd93ndksand030dnsand90djasndasN",
+       "REFRESH_TOKEN_SECRET" : "jdsadehkjwqhekjhdadhjskjhqe9hdduydgfduasg3282tyfydf"
+    }
+  }
