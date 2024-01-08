@@ -14,7 +14,7 @@ app.use(express.static("public/files"))
 app.use(express.json())
 app.use(
     cors({
-        origin: ['http://localhost:5173', 'http://192.168.0.22:5173'], // Ganti dengan alamat asal aplikasi React Anda
+        origin: ["https://super-truffle-db8641.netlify.app", "http://localhost:5173"], // Ganti dengan alamat asal aplikasi React Anda
         methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
         credentials: true, // Mengizinkan kredensial (misalnya, dengan menggunakan cookie)
     })
