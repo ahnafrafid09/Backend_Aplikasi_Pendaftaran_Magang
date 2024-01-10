@@ -33,7 +33,7 @@ export const Login = async (req, res) => {
             maxAge: 24 * 60 * 60 * 1000,
             // sameSite: 'None',
             // Code Di Bawah Digunakan Pada Saat Menggunakan https
-            // secure: true
+            secure: true
         })
         res.status(200).json({ role: role, accessToken })
     } catch (error) {
