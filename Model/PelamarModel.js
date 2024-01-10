@@ -18,7 +18,7 @@ const Pelamar = db.define('pelamar', {
         allowNull: false
     },
     no_telepon: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.INTEGER({ length: 20 }),
         allowNull: false
     },
     no_induk: {

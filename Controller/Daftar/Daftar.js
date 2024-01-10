@@ -77,6 +77,7 @@ export const daftar = async (req, res) => {
     const userId = decoded.userId
     const pelamar = JSON.parse(req.body.pelamar);
     if (!pelamar || pelamar.length === 0 || !req.body.noSurat || !req.body.tglPengajuan || !req.body.namaInstansi || !req.body.alamatInstansi || !req.body.kategori) return res.status(400).json({ msg: 'Data Harus di Isi Semua' });
+    
     try {
         const instansi = await Instansi.create({
             nama_instansi: req.body.namaInstansi,

@@ -5,6 +5,12 @@ const db = new Sequelize('freedb_db_pendaftaran_magang', 'freedb_username123', '
     dialect: "mysql"
 });
 
+// const db = new Sequelize('db_pendaftaran_magang', 'root', '', {
+//     host: 'localhost',
+//     dialect: "mysql"
+// });
+
+
 
 
 export default db
