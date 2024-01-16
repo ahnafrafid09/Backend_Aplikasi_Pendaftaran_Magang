@@ -1,14 +1,9 @@
 import { Sequelize } from "sequelize";
 
-const db = new Sequelize('freedb_db_pendaftaran_magang', 'freedb_username123', '9C$RvV3pgKf#JXB', {
-    host: 'sql.freedb.tech',
+const db = new Sequelize('db_pendaftaran_magang', 'root', '', {
+    host: 'localhost',
     dialect: "mysql"
 });
-
-// const db = new Sequelize('db_pendaftaran_magang', 'root', '', {
-//     host: 'localhost',
-//     dialect: "mysql"
-// });
 
 
 

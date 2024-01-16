@@ -72,8 +72,8 @@ CREATE TABLE IF NOT EXISTS `pelamar` (
   `nama_lengkap` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `email` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `alamat` text COLLATE utf8mb4_general_ci NOT NULL,
-  `no_telepon` int NOT NULL,
-  `no_induk` int NOT NULL,
+  `no_telepon` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `no_induk` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   `instansiId` int DEFAULT NULL,
@@ -114,7 +114,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Data exporting was unselected.
 

@@ -18,11 +18,11 @@ const Pelamar = db.define('pelamar', {
         allowNull: false
     },
     no_telepon: {
-        type: DataTypes.INTEGER({ length: 20 }),
+        type: DataTypes.STRING,
         allowNull: false
     },
     no_induk: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: false
     },
 

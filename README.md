@@ -29,7 +29,9 @@ Pastikan Anda memiliki [Node.js](https://nodejs.org/) dan [npm](https://www.npmj
 
 4. Import database yang ada pada folder database
 
-5. Menjalankan aplikasi
+5. Buatlah file .env yang berisi dari file .env.example
+
+6. Menjalankan aplikasi
    ```bash
    npm run dev
    ```

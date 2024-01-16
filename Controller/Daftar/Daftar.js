@@ -77,7 +77,7 @@ export const daftar = async (req, res) => {
     const userId = decoded.userId
     const pelamar = JSON.parse(req.body.pelamar);
     if (!pelamar || pelamar.length === 0 || !req.body.noSurat || !req.body.tglPengajuan || !req.body.namaInstansi || !req.body.alamatInstansi || !req.body.kategori) return res.status(400).json({ msg: 'Data Harus di Isi Semua' });
-    
+
     try {
         const instansi = await Instansi.create({
             nama_instansi: req.body.namaInstansi,
@@ -112,6 +112,10 @@ export const daftar = async (req, res) => {
         });
 
         for (const pelamarData of pelamar) {
+            const validNoTelp = /^[0-9]+$/.test(pelamarData.noTelp);
+
+            if (!validNoTelp) return res.status(422).json({ msg: "Nomor telepon harus berisi angka" });
+
             await Pelamar.create({
                 nama_lengkap: pelamarData.namaLengkap,
                 email: pelamarData.email,
